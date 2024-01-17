@@ -1,11 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
-def scrape_properties(response):
 
+def scrape_properties(response):
     soup = BeautifulSoup(response, 'lxml')
     property_list = []  # Initialize an empty list to store property data
-
 
     # Find all articles with the specified class
     articles = soup.find_all('article', class_='placard tier4 landscape')

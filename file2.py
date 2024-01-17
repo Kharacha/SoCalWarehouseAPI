@@ -4,6 +4,7 @@ import re
 import json
 import time
 
+
 def scrape_listings(response):
     soup = BeautifulSoup(response, 'lxml')
     property_list = []

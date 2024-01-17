@@ -45,7 +45,9 @@ def get_combined_data():
     city = request.args.get("city")
     state = request.args.get('state')
 
-    url_listings = f'https://www.loopnet.com/search/commercial-real-estate/{city}-{state}-{zipcode}/for-sale/{page}'
+    if zipcode:
+        zipcode = f"-{zipcode}"
+    url_listings = f'https://www.loopnet.com/search/commercial-real-estate/{city}-{state}{zipcode}/for-sale/{page}'
 
     response = session.get(url_listings)
     response_content = response.content
