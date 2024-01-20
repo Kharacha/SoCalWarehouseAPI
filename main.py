@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 from flask import Flask, jsonify, request
 from concurrent.futures import ThreadPoolExecutor
 from flask_cors import CORS
+
+from saledetail import scrape_sale_detail
+from auctiondetail import scrape_auction_detail
 from file1 import scrape_properties
 from file2 import scrape_listings
 from fake_useragent import UserAgent
@@ -14,14 +17,11 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-
 ua = UserAgent()
 headers = {'User-Agent': str(ua.chrome)}
 
-
 # Define a ThreadPoolExecutor
 executor = ThreadPoolExecutor()
-
 
 session = requests.Session()
 session.headers.update(headers)
@@ -39,7 +39,6 @@ def getMaxPage(soup):
 # Define a Flask route for serving combined property data
 @app.route('/getcombineddata', methods=['GET'])
 def get_combined_data():
-
     page = request.args.get('page')
     zipcode = request.args.get('zipcode')
     city = request.args.get("city")
@@ -68,6 +67,28 @@ def get_combined_data():
     }
     # Return JSON data
     return jsonify(combined_data)
+
+
+@app.route('/getdetails', methods=['GET'])
+def find_details():
+    detailid = request.args.get('detailid')
+    url_details = f'https://www.loopnet.com/listing/{detailid}'
+
+    details = session.get(url_details)
+    # print(details)
+    details_content = details.content
+
+    result = scrape_sale_detail(details_content)
+
+
+
+    combined_details = {
+        'buildingDetail':
+            result
+    }
+    print(combined_details)
+    return jsonify(combined_details)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

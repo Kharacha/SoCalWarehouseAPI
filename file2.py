@@ -72,3 +72,5 @@ def scrape_listings(response):
             property_list.append(property_data)
 
     return property_list
+
+

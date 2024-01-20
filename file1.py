@@ -40,3 +40,5 @@ def scrape_properties(response):
         property_list.append(property_data)
 
     return property_list
+
+
