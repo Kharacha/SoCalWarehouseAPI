@@ -22,9 +22,6 @@ def scrape_auction_detail(details):
     if description_section is not None:
         description_text = description_section.find('div', class_='column-12 sales-notes-text').text.strip()
 
-    print(description_text)
-
-
     # Extract data from property facts section
     property_facts_section = soup.find('section', class_='listing-features property-facts')
     property_facts_div = property_facts_section.find('div', class_='property-facts-row')
