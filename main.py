@@ -51,10 +51,37 @@ def get_combined_data():
     zipcode = request.args.get('zipcode')
     city = request.args.get("city")
     state = request.args.get('state')
+    propertyType = request.args.get('propertyType')
+    salekind = request.args.get('salekind')
+
+    buildingTypes = {
+        'commerical': 'commercial-real-estate',
+        'office': 'office-buildings',
+        'industrial': "industrial-properties",
+        'warehouses': 'warehouses',
+        'manufacturing': 'manufacturing-properties',
+        'trucks-stops': "truck-stops-and-truck-terminals",
+        'other-industrial': 'other-industrial-buildings',
+        'land': 'land',
+        'residental-land': 'residential-land',
+        'commercial-land': 'commercial-land',
+        'industrial-land': 'industrial-land',
+        'farms': 'farms',
+    }
+
+    saleTypes = {
+        'auctions': 'auctions',
+        'forSale': 'for-sale',
+        'forlease': 'for-lease',
+    }
 
     if zipcode:
         zipcode = f"-{zipcode}"
-    url_listings = f'https://www.loopnet.com/search/commercial-real-estate/{city}-{state}{zipcode}/for-sale/{page}'
+
+    sales = saleTypes.get(salekind) or "for-sale"
+    buildingKind = buildingTypes.get(propertyType) or "commercial-real-estate"
+
+    url_listings = f'https://www.loopnet.com/search/{buildingKind}/{city}-{state}{zipcode}/{sales}/{page}'
 
 
     response = session.get(url_listings, headers=headers)
@@ -93,7 +120,6 @@ def find_details():
             result
     }
     return jsonify(combined_details)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
