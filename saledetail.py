@@ -8,7 +8,7 @@ def replace_unicode_chars(text):
 def scrape_sale_detail(details):
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(details, 'lxml')
-    # print(soup)
+    print(soup)
 
     # Extract the address from the breadcrumbs
     address_section = soup.find('h1', class_='breadcrumbs__crumb breadcrumbs__crumb-title')
