@@ -37,11 +37,14 @@ session = requests.Session()
 
 def getMaxPage(soup):
     total_results_span = soup.find('span', class_='total-results-paging-digits')
-    total_results_text = total_results_span.get_text(strip=True)
 
-    last_page_number = total_results_text.split()[-1]
-
-    return math.ceil(int(last_page_number) / 25)
+    if total_results_span:
+        total_results_text = total_results_span.get_text(strip=True)
+        last_page_number = total_results_text.split()[-1]
+        return math.ceil(int(last_page_number) / 25)
+    else:
+        # Handle the case when total_results_span is None
+        return 1  # Return a default value or handle it according to your requirement
 
 
 # Define a Flask route for serving combined property data
